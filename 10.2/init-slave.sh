@@ -25,6 +25,7 @@ is_master_up () {
   mysql -h $MASTER_HOST \
     -u $REPLICATION_USER \
     -p$REPLICATION_PASSWORD \
+    -P $MASTER_PORT \
     -e "select 1" \
     &>/dev/null
 }
