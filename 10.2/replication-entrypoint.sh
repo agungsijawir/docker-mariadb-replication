@@ -17,6 +17,16 @@ if [ -n "$MASTER_PORT_3306_TCP_ADDR" ]; then
   export MASTER_PORT=$MASTER_PORT_3306_TCP_PORT
 fi
 
+cat >/docker-entrypoint-initdb.d/mysql_secure_installation.sql  <<EOF
+-- emulate mysql_secure_installation
+UPDATE mysql.user SET Password=PASSWORD('${MYSQL_ROOT_PASSWORD}') WHERE User='root';
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DROP DATABASE IF EXISTS test;
+DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+FLUSH PRIVILEGES;
+EOF
+
 if [ -z "$MASTER_HOST" ]; then
   export SERVER_ID=1
   cat >/docker-entrypoint-initdb.d/init-master.sh  <<EOF
