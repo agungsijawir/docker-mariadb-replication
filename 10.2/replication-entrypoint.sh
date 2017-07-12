@@ -19,7 +19,7 @@ fi
 
 if [ -z "$MASTER_HOST" ]; then
   export SERVER_ID=1
-  cat >/docker-entrypoint-initdb.d/init-master.sh  <<'EOF'
+  cat >/docker-entrypoint-initdb.d/init-master.sh  <<EOF
 #!/bin/bash
 
 echo Creating replication user ...
