@@ -22,6 +22,14 @@ Additional environment variables:
 
 `docker-compose up`
 
+# Convenience Functions
+
+These are a quick way to try this image with a master and a pair of slaves. (As the `docker-compose.yml` is currently configured, none of them persist data.)
+
+* `bin/start.sh` - Start the services.
+* `bin/test.sh` - Test replication.
+* `bin/kill.sh` - Destroy all traces of the running services.
+
 # Docker Run
 
 ## Start master
