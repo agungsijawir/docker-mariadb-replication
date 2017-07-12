@@ -38,7 +38,7 @@ These are a quick way to try this image with a master and a pair of slaves. (As 
 docker run -d \
   --name mysql_master \
   -e MYSQL_ALLOW_EMPTY_PASSWORD=1 \
-  jamiejackson/mariadb-replication:5.7
+  jamiejackson/mariadb-replication:latest
 ```
 
 ## Start slave
@@ -48,10 +48,10 @@ docker run -d \
   --name mysql_slave \
   -e MYSQL_ALLOW_EMPTY_PASSWORD=1 \
   --link mysql_master:master \
-  jamiejackson/mariadb-replication:5.7
+  jamiejackson/mariadb-replication:latest
 ```
 
-# Test the replication
+## Test the replication
 ```
 cat 02-master-database.sql | docker exec -i mysql_master mysql
 docker exec -it mysql_slave mysql -e 'select * from test.test'
