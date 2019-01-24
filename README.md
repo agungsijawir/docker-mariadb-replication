@@ -56,3 +56,10 @@ docker run -d \
 cat 02-master-database.sql | docker exec -i mysql_master mysql
 docker exec -it mysql_slave mysql -e 'select * from test.test'
 ```
+
+# Clone and build
+git clone https://github.com/agungsijawir/docker-mariadb-replication
+
+docker build -t yourrepository/mariadb:tag .
+
+docker push yourrepository/mariadb:tag

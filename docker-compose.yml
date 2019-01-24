@@ -1,8 +1,13 @@
 version: '3'
-services:
+networks:
+    backend_vlan_01:
+        ipam:
+            config:
+                - subnet: 192.168.95.0/24
 
+services:
   db_master:
-    image: jamiejackson/mariadb-replication:10.2
+    image: agungandika/mariadb-replication:10.2
     container_name: db_master
     ports:
       - "3307:3306"
@@ -10,9 +15,15 @@ services:
     environment:
       #- MYSQL_ALLOW_EMPTY_PASSWORD=1
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      backend_vlan_01:
+        ipv4_address: 192.168.95.10
+    volumes:
+      - "./data/mysql/db_master:/var/lib/mysql"
+      - "./log/mysql/db_master:/var/log/mysql"
 
   db_slave1:
-    image: jamiejackson/mariadb-replication:10.2
+    image: agungandika/mariadb-replication:10.2
     container_name: db_slave1
     depends_on:
       - "db_master"
@@ -26,9 +37,15 @@ services:
       - MASTER_HOST=master
       - MASTER_PORT=3306
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      backend_vlan_01:
+        ipv4_address: 192.168.95.20
+    volumes:
+      - "./data/mysql/db_slave1:/var/lib/mysql"
+      - "./log/mysql/db_slave1:/var/log/mysql"
 
   db_slave2:
-    image: jamiejackson/mariadb-replication:10.2
+    image: agungandika/mariadb-replication:10.2
     container_name: db_slave2
     depends_on:
       - "db_master"
@@ -42,3 +59,27 @@ services:
       - MASTER_HOST=master
       - MASTER_PORT=3306
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      backend_vlan_01:
+        ipv4_address: 192.168.95.21
+    volumes:
+      - "./data/mysql/db_slave2:/var/lib/mysql"
+      - "./log/mysql/db_slave2:/var/log/mysql"
+
+  db_manager:
+    image: phpmyadmin/phpmyadmin
+    container_name: db_pma
+    ports:
+        - "8081:80"
+    environment:
+        - PMA_ARBITRARY=1
+        # - PMA_HOST=${MYSQL_HOST}
+    restart: always
+    depends_on:
+        - "db_master"
+    networks:
+      backend_vlan_01:
+        ipv4_address: 192.168.95.6
+    volumes:
+        - "./etc/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php"
+        - "./log/phpmyadmin:/var/log"
