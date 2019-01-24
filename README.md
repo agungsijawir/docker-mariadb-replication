@@ -53,25 +53,25 @@ The current repository has following folders functions, among others:
 
 ```
 docker run -d \
-  --name mysql_master \
+  --name db_master \
   -e MYSQL_ALLOW_EMPTY_PASSWORD=1 \
-  jamiejackson/mariadb-replication:latest
+  agungandika/mariadb-replication:10.2
 ```
 
 ## Start slave
 
 ```
 docker run -d \
-  --name mysql_slave \
+  --name db_slave1 \
   -e MYSQL_ALLOW_EMPTY_PASSWORD=1 \
-  --link mysql_master:master \
-  jamiejackson/mariadb-replication:latest
+  --link db_master:master \
+  agungandika/mariadb-replication:10.2
 ```
 
 ## Test the replication
 ```
-cat 02-master-database.sql | docker exec -i mysql_master mysql
-docker exec -it mysql_slave mysql -e 'select * from test.test'
+cat 02-master-database.sql | docker exec -i db_master mysql
+docker exec -it db_slave1 mysql -e 'select * from test.test'
 ```
 
 # Clone and build
