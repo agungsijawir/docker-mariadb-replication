@@ -30,6 +30,23 @@ These are a quick way to try this image with a master and a pair of slaves. (As 
 * `bin/test.sh` - Test replication.
 * `bin/kill.sh` - Destroy all traces of the running services.
 
+* `bin/build_image.sh` - Rebuild docker image.
+* `bin/push_image.sh` - Push rebuilt docker image to docker hub (public).
+
+# Directory Explanations
+
+The current repository has following folders functions, among others:
+
+```
+/root
+ |-- /10.2		Docker image source files
+ |-- /bin		Convenience functions files
+ |-- /data 		MariaDB Binary data for persistent saves
+ |-- /etc		phpMyAdmin etc config files
+ |-- /log		mariadb and/or phpMyAdmin logs
+
+```
+
 # Docker Run
 
 ## Start master
